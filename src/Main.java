@@ -28,7 +28,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        Scanner sc=new Scanner(new File("C:\\Projects\\IntelliJ IDEA\\GIS\\data\\source.txt"));
+        Scanner sc=new Scanner(new File("./data/source.txt"));
         graph=new Graph();
         sc.nextLine();
         while(sc.hasNext()){
@@ -88,7 +88,7 @@ public class Main {
         System.out.println("Total search loop: "+totalLoop);
         System.out.println("Total search time: "+(System.currentTimeMillis()-time));
 
-        File lpModelFile=new File("C:\\Projects\\IntelliJ IDEA\\GIS\\data\\sppModel.lp");
+        File lpModelFile=new File("./data/sppModel.lp");
         if(!lpModelFile.exists()){
             lpModelFile.createNewFile();
         }
@@ -97,7 +97,7 @@ public class Main {
 
         Runtime runtime=Runtime.getRuntime();
         try{
-            Process process=runtime.exec("cbc \"C:\\Projects\\IntelliJ IDEA\\GIS\\data\\sppModel.lp\"");
+            Process process=runtime.exec("cbc \"data/sppModel.lp\"");
             BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while((line= bufferedReader.readLine())!=null){

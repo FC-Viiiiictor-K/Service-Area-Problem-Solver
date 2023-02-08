@@ -29,7 +29,7 @@ public class Main_connected {
     }
 
     public static void main(String[] args) throws IOException {
-        Scanner sc=new Scanner(new File("C:\\Projects\\IntelliJ IDEA\\GIS\\data\\source.txt"));
+        Scanner sc=new Scanner(new File("./data/source.txt"));
         graph=new ConnectedGraph();
         sc.nextLine();
         while(sc.hasNext()){
@@ -48,7 +48,7 @@ public class Main_connected {
         graph.constructDistance();
         graph.constructNearest();
         graph.initializeNeighbors();
-        sc=new Scanner(new File("C:\\Projects\\IntelliJ IDEA\\GIS\\data\\connectivity.txt"));
+        sc=new Scanner(new File("./data/connectivity.txt"));
         sc.nextLine();
         while(sc.hasNext()){
             String line=sc.nextLine();
@@ -105,7 +105,7 @@ public class Main_connected {
         System.out.println("Total search loop: "+totalLoop);
         System.out.println("Total search time: "+(System.currentTimeMillis()-time));
 
-        File lpModelFile=new File("C:\\Projects\\IntelliJ IDEA\\GIS\\data\\sppModel.lp");
+        File lpModelFile=new File("./data/sppModel.lp");
         if(!lpModelFile.exists()){
             lpModelFile.createNewFile();
         }
@@ -115,7 +115,7 @@ public class Main_connected {
         Runtime runtime=Runtime.getRuntime();
         double finalResult = 1000000.0;
         try{
-            Process process=runtime.exec("cbc \"C:\\Projects\\IntelliJ IDEA\\GIS\\data\\sppModel.lp\"");
+            Process process=runtime.exec("cbc \"data/sppModel.lp\"");
             BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while((line= bufferedReader.readLine())!=null){

@@ -1,4 +1,5 @@
 import java.io.*;
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Main {
@@ -64,7 +65,6 @@ public class Main {
             if(solution.getCost()<bestSolution.getCost()){
                 notImproved+=(solution.getCost()-bestSolution.getCost())/bestSolution.getCost()*notImproveBound*1000;
                 notImproved=Math.max(notImproved,0);
-                System.out.println("notImproved="+notImproved);
                 bestSolution=solution.getCopy();
                 solution=bestSolution.reconstruct();
                 //System.out.println("Reconstructed!");
@@ -74,13 +74,12 @@ public class Main {
                     notImproved++;
                     solution=bestSolution.reconstruct();
                     //System.out.println("Not improved, reconstructed!");
-                    System.out.println("notImproved="+notImproved);
                 }
                 else{
                     break;
                 }
             }
-            System.out.println("Current best solution:"+bestSolution.getCost()+"\nGap: "+(bestSolution.getCost()-answer)/answer*100+"%");
+            System.out.println("totalLoop="+totalLoop+"\tnotImproved="+notImproved+"\tCurrent best solution:"+bestSolution.getCost()+"\tGap: "+(bestSolution.getCost()-answer)/answer*100+"%");
         }
         //bestSolution.outputInformation();
         System.out.println("----------End of search----------");
@@ -96,16 +95,23 @@ public class Main {
         fos.write(sppModel.toString().getBytes());
 
         Runtime runtime=Runtime.getRuntime();
+        double finalResult = 1000000.0;
         try{
             Process process=runtime.exec("cbc \"data/sppModel.lp\"");
             BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while((line= bufferedReader.readLine())!=null){
                 System.out.println(line);
+                if(line.startsWith("Objective value:                ")){
+                    String[] split=line.split(" ");
+                    finalResult=Double.parseDouble(split[split.length-1]);
+                }
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
+        BigDecimal bigDecimal=new BigDecimal((finalResult-answer)/answer*100);
+        System.out.println("** Final Gap: "+bigDecimal.toString().substring(0,18)+"% **");
     }
 }
